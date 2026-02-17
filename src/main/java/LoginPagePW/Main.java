@@ -4,10 +4,11 @@ package LoginPagePW;
 import com.microsoft.playwright.*;
 
 import org.testng.Assert;
+import org.testng.annotations.Test;
 
-public class MainClassInspection {
+public class Main {
 
-//	@Test
+	@Test
 	public void runNewEnquiryFromExcel() throws InterruptedException {
 
 		String excelPath = "C:\\Users\\ACS-90\\Downloads\\ProcurementNewPW.xlsx";
@@ -79,8 +80,8 @@ public class MainClassInspection {
 		}
 		
 	}
-	public static void main(String[] args) throws InterruptedException {
-		MainClassInspection main = new MainClassInspection();
-		main.runNewEnquiryFromExcel();
-	}
+//	public static void main(String[] args) throws InterruptedException {
+//		Main main = new Main();
+//		main.runNewEnquiryFromExcel();
+//	}
 }
