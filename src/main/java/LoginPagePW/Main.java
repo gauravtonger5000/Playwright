@@ -9,7 +9,7 @@ public class Main {
   public void runNewEnquiryFromExcel() throws InterruptedException {
 
     String excelPath = "C:\\Users\\ACS-90\\Downloads\\ProcurementNew.xlsx";
-
+    System.out.println(excelPath);
     ExcelUtil excel = new ExcelUtil(excelPath);
 
     try (Playwright playwright = Playwright.create()) {
