@@ -9,12 +9,17 @@ public class Main {
 	@Test
 	public void runNewEnquiryFromExcel() throws InterruptedException {
 
-		String excelPath = "C:\\Users\\ACS-90\\Downloads\\ProcurementNewPW.xlsx";
-		ExcelUtil excel = new ExcelUtil(excelPath);
+//		String excelPath = "C:\\Users\\ACS-90\\Downloads\\ProcurementNewPW.xlsx";
+//		ExcelUtil excel = new ExcelUtil(excelPath);
+		String excelPath = getClass()
+		        .getClassLoader()
+		        .getResource("ProcurementNewPW.xlsx")
+		        .getPath();
 
+		ExcelUtil excel = new ExcelUtil(excelPath);
 		try (Playwright playwright = Playwright.create()) {
 			
-			Browser browser = playwright.chromium().launch(new BrowserType.LaunchOptions().setHeadless(false));
+			Browser browser = playwright.chromium().launch(new BrowserType.LaunchOptions().setHeadless(true));
 
 			// ✅ Always use BrowserContext
 			BrowserContext context = browser.newContext();
@@ -28,7 +33,12 @@ public class Main {
 			String otp = excel.getCell("Credentials", 1, 1);
 
 			page.navigate(url);
+			System.out.println("Test started in Jenkins");
 
+			page.screenshot(new Page.ScreenshotOptions()
+			        .setPath(java.nio.file.Paths.get("screenshot.png")));
+
+			System.out.println("Screenshot captured");
 			int lastRow = excel.getLastRow("New Enquiry");
 
 			for (int i = 1; i <= 1; i++) {
