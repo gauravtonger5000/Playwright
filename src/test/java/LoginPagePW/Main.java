@@ -2,8 +2,6 @@ package LoginPagePW;
 
 
 import com.microsoft.playwright.*;
-
-import org.testng.Assert;
 import org.testng.annotations.Test;
 
 public class Main {
