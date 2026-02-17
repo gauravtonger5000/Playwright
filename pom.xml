@@ -5,7 +5,7 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>LoginPagePW</groupId>
-	<artifactId>playwright-framework</artifactId>
+	<artifactId>playwright-framework1</artifactId>
 	<version>1.0-SNAPSHOT</version>
 
 	<!-- ✅ Java version -->
