@@ -90,7 +90,6 @@ public class ProcurementInspectionPage {
 
 	public void startInspection(String regNo) throws InterruptedException {
 		Thread.sleep(10000);
-		System.out.println("Inspection Button");
 		Locator startBtn = page.locator("//button[text()=\"Start Inspection\"]");
 		if (!startBtn.isVisible()) {
 			throw new RuntimeException(regNo + " not found");
@@ -116,11 +115,6 @@ public class ProcurementInspectionPage {
 			btn.click();
 		}
 	}
-
-	/*
-	 * --------------------------------------------------- TAB HANDLING
-	 * ---------------------------------------------------
-	 */
 
 	public void tabName(String tab_name) {
 		try {
@@ -223,6 +217,11 @@ public class ProcurementInspectionPage {
 			// Handle SweetAlert message
 			// --------------------------------
 			Locator alert = page.locator("//div[@id='swal2-html-container']");
+			
+
+			// wait until alert is visible
+			alert.waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.VISIBLE));
+			
 			String saveAlert = alert.innerText();
 
 			if (saveAlert.toLowerCase().contains("success") || saveAlert.toLowerCase().contains("partially")) {
@@ -318,33 +317,28 @@ public class ProcurementInspectionPage {
 
 	public void dropDownType(String methodName, String dropdownValue, String tabName) {
 
-		try {
-			Locator dropdown = page.locator("//select[contains(@aria-describedby,'" + methodName + "')]");
+	    try {
 
-			// not present
-			if (dropdown.count() == 0)
-				return;
+	        Locator dropdown = page.locator("//select[contains(@aria-describedby,'" + methodName + "')]");
 
-			// not enabled
-			if (!dropdown.isEnabled())
-				return;
+	        dropdown.waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.VISIBLE));
 
-			// ensure visible & attached
-			dropdown.waitFor();
+	        if (!dropdown.isEnabled()) return;
 
-			// dependent dropdown (Model)
-			if (methodName.contains("Model")) {
-				page.waitForCondition(() -> dropdown.locator("option").count() > 1);
-			}
+	        // wait until options load
+	        page.waitForCondition(() -> dropdown.locator("option").count() > 1);
 
-			// 🔥 FORCE SELECT (even if already selected)
-			dropdown.selectOption(new SelectOption().setLabel(dropdownValue));
-			totalQuestionFilled++;
+	        // trim value from excel
+	        dropdownValue = dropdownValue.trim();
 
-		} catch (Exception e) {
-			System.out.println("Dropdown selection failed for: " + methodName);
-			System.out.println(e.getMessage());
-		}
+	        dropdown.selectOption(new SelectOption().setLabel(dropdownValue));
+
+	        totalQuestionFilled++;
+
+	    } catch (Exception e) {
+	        System.out.println("Dropdown selection failed for: " + methodName);
+	        System.out.println(e.getMessage());
+	    }
 	}
 
 	public void starRating(String methodName, String parameter, String tabName) {

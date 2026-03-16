@@ -1,25 +1,19 @@
 package LoginPagePW;
 
-
 import com.microsoft.playwright.*;
-import org.testng.annotations.Test;
 
 public class Main {
 
-	@Test
 	public void runNewEnquiryFromExcel() throws InterruptedException {
-
-//		String excelPath = "C:\\Users\\ACS-90\\Downloads\\ProcurementNewPW.xlsx";
+		System.out.println("Launch");
+		String excelPath = "C:\\Users\\ACS-90\\Downloads\\ProcurementNewPW.xlsx";
 //		ExcelUtil excel = new ExcelUtil(excelPath);
-		String excelPath = getClass()
-		        .getClassLoader()
-		        .getResource("ProcurementNewPW.xlsx")
-		        .getPath();
+//		String excelPath = getClass().getClassLoader().getResource("ProcurementNewPW.xlsx").getPath();
 
 		ExcelUtil excel = new ExcelUtil(excelPath);
 		try (Playwright playwright = Playwright.create()) {
 			
-			Browser browser = playwright.chromium().launch(new BrowserType.LaunchOptions().setHeadless(true));
+			Browser browser = playwright.chromium().launch(new BrowserType.LaunchOptions().setHeadless(false));
 
 			// ✅ Always use BrowserContext
 			BrowserContext context = browser.newContext();
@@ -33,13 +27,13 @@ public class Main {
 			String otp = excel.getCell("Credentials", 1, 1);
 
 			page.navigate(url);
-			System.out.println("Test started in Jenkins");
 
 			page.screenshot(new Page.ScreenshotOptions()
 			        .setPath(java.nio.file.Paths.get("screenshot.png")));
 
-			System.out.println("Screenshot captured");
-			int lastRow = excel.getLastRow("New Enquiry");
+//			System.out.println("Screenshot captured");
+			
+//			int lastRow = excel.getLastRow("New Enquiry");
 
 			for (int i = 1; i <= 1; i++) {
 
@@ -54,6 +48,7 @@ public class Main {
 					pi.procurement();
 					pi.openInspectionInformation();
 					pi.clickAllPending();
+					Thread.sleep(5000);
 					pi.searchRegistration(reg_no);
 					pi.startInspection(reg_no);
 					pi.selectInspectionType();
@@ -66,7 +61,6 @@ public class Main {
 						String method_type = excel.getCell("Inspection Information", j, 8);
 						String method_name = excel.getCell("Inspection Information", j, 9);
 						String parameter = excel.getCell("Inspection Information", j, 10);
-
 						if (!tab_name.equals(previousTabName)) {
 							pi.tabName(tab_name);
 							previousTabName = tab_name; // Update the previous tab name
@@ -88,8 +82,8 @@ public class Main {
 		}
 		
 	}
-//	public static void main(String[] args) throws InterruptedException {
-//		Main main = new Main();
-//		main.runNewEnquiryFromExcel();
-//	}
+	public static void main(String[] args) throws InterruptedException {
+		Main main = new Main();
+		main.runNewEnquiryFromExcel();
+	}
 }
