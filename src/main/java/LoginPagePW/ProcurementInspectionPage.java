@@ -32,8 +32,8 @@ public class ProcurementInspectionPage {
 			// Step 1: Wait up to 2 seconds for spinner to appear
 			spinner.waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.VISIBLE).setTimeout(2000));
 
-			// Step 2: If spinner appears, wait until it disappears
-			spinner.waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.HIDDEN));
+			// Step 2: If spinner appears, wait until it disappears 5 Minutes wait if we don't pass time then it wait for 30 seconds by default
+			spinner.waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.HIDDEN).setTimeout(300000));
 
 		} catch (PlaywrightException e) {
 			// Spinner did NOT appear within 2 seconds → move on

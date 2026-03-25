@@ -5,7 +5,7 @@ import com.microsoft.playwright.*;
 public class Main {
 
 	public void runNewEnquiryFromExcel() throws InterruptedException {
-		System.out.println("Launch");
+		System.out.println("Launching Chrome");
 		String excelPath = "C:\\Users\\ACS-90\\Downloads\\ProcurementNewPW.xlsx";
 //		ExcelUtil excel = new ExcelUtil(excelPath);
 //		String excelPath = getClass().getClassLoader().getResource("ProcurementNewPW.xlsx").getPath();
@@ -47,8 +47,8 @@ public class Main {
 					loginPage.login(username, password);
 					pi.procurement();
 					pi.openInspectionInformation();
-					pi.clickAllPending();
 					Thread.sleep(5000);
+					pi.clickAllPending();
 					pi.searchRegistration(reg_no);
 					pi.startInspection(reg_no);
 					pi.selectInspectionType();
