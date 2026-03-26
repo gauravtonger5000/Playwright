@@ -5,11 +5,8 @@ import com.microsoft.playwright.options.*;
 
 import java.io.File;
 import java.nio.file.Paths;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeoutException;
 
 public class ProcurementInspectionPage {
 
@@ -20,10 +17,6 @@ public class ProcurementInspectionPage {
 		this.page = page;
 	}
 
-	/*
-	 * --------------------------------------------------- COMMON WAITS
-	 * ---------------------------------------------------
-	 */
 
 	public void waitForNgxSpinner() {
 		Locator spinner = page.locator("ngx-spinner");
@@ -61,7 +54,6 @@ public class ProcurementInspectionPage {
 	}
 
 
-
 	public void procurement() {
 	    Locator procurement = page.locator("//span[normalize-space(text())='Procurement']").first();
 	    procurement.scrollIntoViewIfNeeded();
@@ -77,11 +69,6 @@ public class ProcurementInspectionPage {
 	public void clickAllPending() {
 		page.locator("button:has-text('All Pending')").first().click();
 	}
-
-	/*
-	 * --------------------------------------------------- INSPECTION FLOW
-	 * ---------------------------------------------------
-	 */
 
 	public void searchRegistration(String regNo) {
 
@@ -153,97 +140,6 @@ public class ProcurementInspectionPage {
 		totalQuestionFilled++;
 	}
 
-	public void saveChangeBtn(String regNo) {
-
-		Page page = this.page; // assuming page is already initialized
-
-		// -------------------------------
-		// Click "Next" button until it disappears
-		// -------------------------------
-		while (true) {
-			try {
-				Locator nextBtn = page.locator("//button[text()=' Next ']");
-
-				if (nextBtn.count() == 0) {
-					break;
-				}
-
-				nextBtn.first().click(new Locator.ClickOptions().setForce(true));
-				page.waitForTimeout(300); // small pause to allow navigation
-
-			} catch (PlaywrightException e) {
-				break; // stop when Next button no longer exists
-			}
-		}
-
-		try {
-			Locator saveBtn = page.locator("//button[contains(text(),'Save Change')]");
-
-			// If Save button is enabled, click once
-			if (saveBtn.isEnabled()) {
-				saveBtn.click();
-			}
-
-			// --------------------------------
-			// Check mandatory field validation
-			// --------------------------------
-			try {
-				page.waitForSelector("//formly-validation-message[text()='This field is required']",
-						new Page.WaitForSelectorOptions().setTimeout(1000));
-				throw new RuntimeException("Please enter all mandatory fields");
-			} catch (TimeoutError e) {
-				// no validation error shown → continue
-			}
-
-			// --------------------------------
-			// Wait until Save button becomes enabled
-			// --------------------------------
-			page.waitForCondition(() -> saveBtn.isEnabled(), new Page.WaitForConditionOptions().setTimeout(60_000));
-
-			if (!saveBtn.isEnabled()) {
-				throw new RuntimeException("Please enter all mandatory fields");
-			}
-
-			// --------------------------------
-			// Final Save click
-			// --------------------------------
-			saveBtn.scrollIntoViewIfNeeded();
-			page.waitForTimeout(1000);
-			saveBtn.click();
-
-			waitForNgxSpinner();
-
-			// --------------------------------
-			// Handle SweetAlert message
-			// --------------------------------
-			Locator alert = page.locator("//div[@id='swal2-html-container']");
-			
-
-			// wait until alert is visible
-			alert.waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.VISIBLE));
-			
-			String saveAlert = alert.innerText();
-
-			if (saveAlert.toLowerCase().contains("success") || saveAlert.toLowerCase().contains("partially")) {
-
-				Locator okBtn = page.locator("//button[text()='OK']");
-				okBtn.waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.ATTACHED));
-				okBtn.click();
-
-				System.out.println(saveAlert + " for Registration No: " + regNo);
-
-			} else {
-				System.out.println(saveAlert + " for Registration No: " + regNo);
-			}
-
-		} catch (RuntimeException e) {
-			throw e;
-		} catch (Exception e) {
-			System.out.println("Error: " + e.getMessage());
-		}
-
-		waitForNgxSpinner();
-	}
 
 	public void imageType(String methodName, String filePath, String tabName) {
 
@@ -409,5 +305,85 @@ public class ProcurementInspectionPage {
 
 	public int getFilledQuestionCount() {
 		return totalQuestionFilled;
+	}
+	public void saveChangeBtn(String regNo) {
+
+		Page page = this.page; // assuming page is already initialized
+
+		// Click "Next" button until it disappears
+		while (true) {
+			try {
+				Locator nextBtn = page.locator("//button[text()=' Next ']");
+
+				if (nextBtn.count() == 0) {
+					break;
+				}
+
+				nextBtn.first().click(new Locator.ClickOptions().setForce(true));
+				page.waitForTimeout(300); // small pause to allow navigation
+
+			} catch (PlaywrightException e) {
+				break; // stop when Next button no longer exists
+			}
+		}
+
+		try {
+			Locator saveBtn = page.locator("//button[contains(text(),'Save Change')]");
+
+			// If Save button is enabled, click once
+			if (saveBtn.isEnabled()) {
+				saveBtn.click();
+			}
+
+			// Check mandatory field validation
+			try {
+				page.waitForSelector("//formly-validation-message[text()='This field is required']",
+						new Page.WaitForSelectorOptions().setTimeout(1000));
+				throw new RuntimeException("Please enter all mandatory fields");
+			} catch (TimeoutError e) {
+				// no validation error shown → continue
+			}
+
+			// Wait until Save button becomes enabled
+			page.waitForCondition(() -> saveBtn.isEnabled(), new Page.WaitForConditionOptions().setTimeout(60_000));
+
+			if (!saveBtn.isEnabled()) {
+				throw new RuntimeException("Please enter all mandatory fields");
+			}
+
+			// Final Save click
+			saveBtn.scrollIntoViewIfNeeded();
+			page.waitForTimeout(1000);
+			saveBtn.click();
+
+			waitForNgxSpinner();
+
+			Locator alert = page.locator("//div[@id='swal2-html-container']");
+			
+
+			// wait until alert is visible
+			alert.waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.VISIBLE));
+			
+			String saveAlert = alert.innerText();
+
+			if (saveAlert.toLowerCase().contains("success") || saveAlert.toLowerCase().contains("partially")) {
+
+				Locator okBtn = page.locator("//button[text()='OK']");
+				okBtn.waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.ATTACHED));
+				okBtn.click();
+
+				System.out.println(saveAlert + " for Registration No: " + regNo);
+
+			} else {
+				System.out.println(saveAlert + " for Registration No: " + regNo);
+			}
+
+		} catch (RuntimeException e) {
+			throw e;
+		} catch (Exception e) {
+			System.out.println("Error: " + e.getMessage());
+		}
+
+		waitForNgxSpinner();
 	}
 }

@@ -24,12 +24,11 @@ public class Main {
 
 			// -------- Read credentials --------
 			String url = excel.getCell("Credentials", 1, 0);
-			String otp = excel.getCell("Credentials", 1, 1);
+//			String otp = excel.getCell("Credentials", 1, 1);
 
 			page.navigate(url);
 
-			page.screenshot(new Page.ScreenshotOptions()
-			        .setPath(java.nio.file.Paths.get("screenshot.png")));
+			page.screenshot(new Page.ScreenshotOptions().setPath(java.nio.file.Paths.get("screenshot.png")));
 
 //			System.out.println("Screenshot captured");
 			
@@ -39,7 +38,7 @@ public class Main {
 
 				String username = excel.getCell("Inspection Information", i, 0);
 				String password = excel.getCell("Inspection Information", i, 1);
-				String inspectiontype = excel.getCell("Inspection Information", 1, 6);
+//				String inspectiontype = excel.getCell("Inspection Information", 1, 6);
 				String reg_no = excel.getCell("Inspection Information", 1, 3);
 
 				try {
