@@ -71,7 +71,6 @@ public class ProcurementInspectionPage {
 	}
 
 	public void searchRegistration(String regNo) {
-
 		page.locator("input[placeholder='Type to filter']").fill(regNo);
 	}
 
@@ -115,7 +114,6 @@ public class ProcurementInspectionPage {
 		} catch (PlaywrightException e) {
 			System.out.println(e.getMessage());
 		}
-
 	}
 
 	public List<String> getQuestions() {
