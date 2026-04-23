@@ -55,6 +55,11 @@ public class ProcurementInspectionPage {
 
 
 	public void procurement() {
+		try {
+			page.locator("(//a[@class=\"side-menu__item ng-star-inserted\"])[1]").hover();
+		}catch(Exception e) {
+			
+		}
 	    Locator procurement = page.locator("//span[normalize-space(text())='Procurement']").first();
 	    procurement.scrollIntoViewIfNeeded();
 	    procurement.click();
