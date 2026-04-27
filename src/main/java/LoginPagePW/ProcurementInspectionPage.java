@@ -147,10 +147,14 @@ public class ProcurementInspectionPage {
 	public void imageType(String methodName, String filePath, String tabName) {
 
 		try {
-			File file = new File(filePath);
+			String downloadPath = System.getProperty("user.home") + "\\Downloads\\";
+
+//			System.out.println(filePath);
+//			System.out.println(downloadPath);
+//			System.out.println(downloadPath+filePath);
+			File file = new File(downloadPath+filePath);
 
 			if (!file.exists()) {
-
 				return;
 			}
 
@@ -161,8 +165,8 @@ public class ProcurementInspectionPage {
 				// same behavior as your Selenium code (silent skip)
 				return;
 			}
-
-			fileInput.setInputFiles(Paths.get(filePath));
+			
+			fileInput.setInputFiles(Paths.get(downloadPath+filePath));
 
 			totalQuestionFilled++;
 

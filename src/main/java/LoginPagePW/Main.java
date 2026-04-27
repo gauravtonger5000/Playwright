@@ -7,7 +7,9 @@ public class Main {
 	public void runNewEnquiryFromExcel() throws InterruptedException {
 		System.out.println("Launching Chrome");
 //		String excelPath = "C:\\Users\\ACS-90\\Downloads\\ProcurementNewPWRohan.xlsx";
-		String excelPath = "C:\\Users\\ACS-90\\Downloads\\ProcurementNewPW.xlsx";
+//		String excelPath = "C:\\Users\\ACS-90\\Downloads\\ProcurementNewPW.xlsx";
+//		Use this to not depend on the full url of image 
+		String excelPath = "C:\\Users\\ACS-90\\Downloads\\ProcurementNewPWDownload.xlsx";
 
 //		ExcelUtil excel = new ExcelUtil(excelPath);
 //		String excelPath = getClass().getClassLoader().getResource("ProcurementNewPW.xlsx").getPath();
