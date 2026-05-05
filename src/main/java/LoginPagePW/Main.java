@@ -5,11 +5,11 @@ import com.microsoft.playwright.*;
 public class Main {
 
 	public void runNewEnquiryFromExcel() throws InterruptedException {
-		System.out.println("Launching Chrome");
+//		System.out.println("Launching Chrome");
 //		String excelPath = "C:\\Users\\ACS-90\\Downloads\\ProcurementNewPWRohan.xlsx";
-//		String excelPath = "C:\\Users\\ACS-90\\Downloads\\ProcurementNewPW.xlsx";
+		String excelPath = "C:\\Users\\ACS-90\\Downloads\\ProcurementNewPW.xlsx";
 //		Use this to not depend on the full url of image 
-		String excelPath = "C:\\Users\\ACS-90\\Downloads\\ProcurementNewPWDownload.xlsx";
+//		String excelPath = "C:\\Users\\ACS-90\\Downloads\\ProcurementNewPWDownload.xlsx";
 
 //		ExcelUtil excel = new ExcelUtil(excelPath);
 //		String excelPath = getClass().getClassLoader().getResource("ProcurementNewPW.xlsx").getPath();
@@ -44,7 +44,7 @@ public class Main {
 				String password = excel.getCell("Inspection Information", i, 1);
 //				String inspectiontype = excel.getCell("Inspection Information", 1, 6);
 				String reg_no = excel.getCell("Inspection Information", 1, 3);
-
+			
 				try {
 					// 🔐 Login
 					loginPage.login(username, password);

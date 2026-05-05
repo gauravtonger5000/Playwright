@@ -152,7 +152,9 @@ public class ProcurementInspectionPage {
 //			System.out.println(filePath);
 //			System.out.println(downloadPath);
 //			System.out.println(downloadPath+filePath);
-			File file = new File(downloadPath+filePath);
+			
+//			File file = new File(downloadPath+filePath);
+			File file = new File(filePath);
 
 			if (!file.exists()) {
 				return;
@@ -166,7 +168,8 @@ public class ProcurementInspectionPage {
 				return;
 			}
 			
-			fileInput.setInputFiles(Paths.get(downloadPath+filePath));
+//			fileInput.setInputFiles(Paths.get(downloadPath+filePath));
+			fileInput.setInputFiles(Paths.get(filePath));
 
 			totalQuestionFilled++;
 
