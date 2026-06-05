@@ -372,8 +372,7 @@ public class ProcurementInspectionPage {
 			
 
 			// wait until alert is visible
-			alert.waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.VISIBLE));
-			
+			alert.waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.VISIBLE).setTimeout(200000));			
 			String saveAlert = alert.innerText();
 
 			if (saveAlert.toLowerCase().contains("success") || saveAlert.toLowerCase().contains("partially")) {
