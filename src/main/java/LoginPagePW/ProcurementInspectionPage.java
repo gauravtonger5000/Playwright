@@ -221,23 +221,66 @@ public class ProcurementInspectionPage {
 		}
 	}
 
+//	 public void dropDownType(String methodName, String dropdownValue, String tabName) {
+//
+//	    try {
+//
+//	        Locator dropdown = page.locator("//select[contains(@aria-describedby,'" + methodName + "')]");
+//
+//	        dropdown.waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.VISIBLE));
+//
+//	        if (!dropdown.isEnabled()) return;
+//
+//	        // wait until options load
+//	        page.waitForCondition(() -> dropdown.locator("option").count() > 1);
+//
+//	        // trim value from excel
+//	        dropdownValue = dropdownValue.trim();
+//
+//	        dropdown.selectOption(new SelectOption().setLabel(dropdownValue));
+//
+//	        totalQuestionFilled++;
+//
+//	    } catch (Exception e) {
+//	        System.out.println("Dropdown selection failed for: " + methodName);
+//	        System.out.println(e.getMessage());
+//	    }
+//	} 
+	
 	public void dropDownType(String methodName, String dropdownValue, String tabName) {
 
 	    try {
 
-	        Locator dropdown = page.locator("//select[contains(@aria-describedby,'" + methodName + "')]");
+	        Locator dropdown = page.locator(
+	            "//*[contains(@id,'" + methodName + "')]//ng-select"
+	        );
 
-	        dropdown.waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.VISIBLE));
+	        dropdown.waitFor(new Locator.WaitForOptions()
+	                .setState(WaitForSelectorState.VISIBLE));
 
-	        if (!dropdown.isEnabled()) return;
+	        if (!dropdown.isEnabled())
+	            return;
 
-	        // wait until options load
-	        page.waitForCondition(() -> dropdown.locator("option").count() > 1);
+	        // Open dropdown
+	        dropdown.click();
 
-	        // trim value from excel
-	        dropdownValue = dropdownValue.trim();
+	        // Search input
+	        Locator input = page.locator(
+	            "//ng-select[contains(@class,'ng-select-opened')]//input"
+	        );
 
-	        dropdown.selectOption(new SelectOption().setLabel(dropdownValue));
+	        input.waitFor(new Locator.WaitForOptions()
+	                .setState(WaitForSelectorState.VISIBLE));
+
+	        input.fill(dropdownValue.trim());
+
+	        // Select matching option
+	        Locator option = page.locator(
+	            "//div[@role='option' and contains(normalize-space(.),'" +
+	            dropdownValue.trim() + "')]"
+	        );
+
+	        option.first().click();
 
 	        totalQuestionFilled++;
 
