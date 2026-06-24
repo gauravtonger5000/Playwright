@@ -247,38 +247,78 @@ public class ProcurementInspectionPage {
 //	    }
 //	} 
 	
+//	public void dropDownType(String methodName, String dropdownValue, String tabName) {
+//
+//	    try {
+//
+//	        Locator dropdown = page.locator(
+//	            "//*[contains(@id,'" + methodName + "')]//ng-select"
+//	        );
+//
+//	        dropdown.waitFor(new Locator.WaitForOptions()
+//	                .setState(WaitForSelectorState.VISIBLE));
+//
+//	        if (!dropdown.isEnabled())
+//	            return;
+//
+//	        // Open dropdown
+//	        dropdown.click();
+//
+//	        // Search input
+//	        Locator input = page.locator(
+//	            "//ng-select[contains(@class,'ng-select-opened')]//input"
+//	        );
+//
+//	        input.waitFor(new Locator.WaitForOptions()
+//	                .setState(WaitForSelectorState.VISIBLE));
+//
+//	        input.fill(dropdownValue.trim());
+//
+//	        // Select matching option
+//	        Locator option = page.locator(
+//	            "//div[@role='option' and contains(normalize-space(.),'" +
+//	            dropdownValue.trim() + "')]"
+//	        );
+//
+//	        option.first().click();
+//
+//	        totalQuestionFilled++;
+//
+//	    } catch (Exception e) {
+//	        System.out.println("Dropdown selection failed for: " + methodName);
+//	        System.out.println(e.getMessage());
+//	    }
+//	}
 	public void dropDownType(String methodName, String dropdownValue, String tabName) {
 
 	    try {
-
 	        Locator dropdown = page.locator(
-	            "//*[contains(@id,'" + methodName + "')]//ng-select"
-	        );
-
-	        dropdown.waitFor(new Locator.WaitForOptions()
-	                .setState(WaitForSelectorState.VISIBLE));
-
-	        if (!dropdown.isEnabled())
+	                "//*[contains(@id,'" + methodName + "')]//ng-select");
+	        if (dropdown.count() == 0) {
+//	            System.out.println("Question not found: " + methodName);
 	            return;
+	        }
+	        dropdown.waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.VISIBLE));
 
-	        // Open dropdown
+	        if (!dropdown.isEnabled()) {
+	            return;
+	        }
+
 	        dropdown.click();
 
-	        // Search input
 	        Locator input = page.locator(
-	            "//ng-select[contains(@class,'ng-select-opened')]//input"
-	        );
+	                "//ng-select[contains(@class,'ng-select-opened')]//input");
 
 	        input.waitFor(new Locator.WaitForOptions()
 	                .setState(WaitForSelectorState.VISIBLE));
 
 	        input.fill(dropdownValue.trim());
 
-	        // Select matching option
 	        Locator option = page.locator(
-	            "//div[@role='option' and contains(normalize-space(.),'" +
-	            dropdownValue.trim() + "')]"
-	        );
+	                "//div[@role='option'][contains(.,'" + dropdownValue.trim() + "')]");
+
+	        option.first().waitFor(new Locator.WaitForOptions()
+	                .setState(WaitForSelectorState.VISIBLE));
 
 	        option.first().click();
 
@@ -286,10 +326,10 @@ public class ProcurementInspectionPage {
 
 	    } catch (Exception e) {
 	        System.out.println("Dropdown selection failed for: " + methodName);
-	        System.out.println(e.getMessage());
+	        System.out.println("Value: " + dropdownValue);
+	        e.printStackTrace();
 	    }
 	}
-
 	public void starRating(String methodName, String parameter, String tabName) {
 
 		int starIndex;

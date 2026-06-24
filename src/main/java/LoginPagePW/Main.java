@@ -72,6 +72,7 @@ public class Main {
 						}
 						pi.executeMethod(method_type, method_name, parameter, previousTabName);
 					}
+					Thread.sleep(500);
 					pi.saveChangeBtn(reg_no);
 				} catch (Exception e) {
 			        // ✅ ONE clean failure line
