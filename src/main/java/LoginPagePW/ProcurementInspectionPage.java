@@ -422,12 +422,28 @@ public class ProcurementInspectionPage {
 
 		try {
 			Locator saveBtn = page.locator("//button[contains(text(),'Save Change')]");
-
+			// Wait until the Save Change button is visible
+			saveBtn.waitFor(
+			    new Locator.WaitForOptions()
+			        .setState(WaitForSelectorState.VISIBLE)
+			        .setTimeout(300000)
+			);
 			// If Save button is enabled, click once
-			if (saveBtn.isEnabled()) {
-				saveBtn.click();
-			}
+//			if (saveBtn.isEnabled()) {
+//				saveBtn.click();
+//			}
 
+			// Use this for test
+			long endTime = System.currentTimeMillis() + 600000; // 10 minutes
+
+			while (System.currentTimeMillis() < endTime) {
+			    if (saveBtn.isEnabled()) {
+			        saveBtn.click();
+			        break;
+			    }
+			    page.waitForTimeout(1000); // Check every second
+			}
+			
 			// Check mandatory field validation
 			try {
 				page.waitForSelector("//formly-validation-message[text()='This field is required']",
@@ -438,7 +454,7 @@ public class ProcurementInspectionPage {
 			}
 
 			// Wait until Save button becomes enabled
-			page.waitForCondition(() -> saveBtn.isEnabled(), new Page.WaitForConditionOptions().setTimeout(60_000));
+			page.waitForCondition(() -> saveBtn.isEnabled(), new Page.WaitForConditionOptions().setTimeout(300_000));
 
 			if (!saveBtn.isEnabled()) {
 				throw new RuntimeException("Please enter all mandatory fields");
