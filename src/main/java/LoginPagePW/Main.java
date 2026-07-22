@@ -52,7 +52,7 @@ public class Main {
 					loginPage.login(username, password);
 					pi.procurement();
 					pi.openInspectionInformation();
-					Thread.sleep(5000);
+					Thread.sleep(2000);
 					pi.clickAllPending();
 					pi.searchRegistration(reg_no);
 					pi.startInspection(reg_no);
@@ -71,6 +71,7 @@ public class Main {
 							previousTabName = tab_name; // Update the previous tab name
 						}
 						pi.executeMethod(method_type, method_name, parameter, previousTabName);
+						Thread.sleep(250);
 					}
 					Thread.sleep(500);
 					pi.saveChangeBtn(reg_no);

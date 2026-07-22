@@ -421,29 +421,33 @@ public class ProcurementInspectionPage {
 		}
 
 		try {
-			Locator saveBtn = page.locator("//button[contains(text(),'Save Change')]");
-			// Wait until the Save Change button is visible
-			saveBtn.waitFor(
-			    new Locator.WaitForOptions()
-			        .setState(WaitForSelectorState.VISIBLE)
-			        .setTimeout(300000)
-			);
-			// If Save button is enabled, click once
+//			Locator saveBtn = page.locator("//button[contains(text(),'Save Change')]");
+//			// Wait until the Save Change button is visible
+//			saveBtn.waitFor(
+//			    new Locator.WaitForOptions()
+//			        .setState(WaitForSelectorState.VISIBLE)
+//			        .setTimeout(300000)
+//			);
+////			 If Save button is enabled, click once
 //			if (saveBtn.isEnabled()) {
 //				saveBtn.click();
 //			}
+			Locator saveBtn = page.locator("//button[contains(text(),'Save Change')]");
 
-			// Use this for test
-			long endTime = System.currentTimeMillis() + 600000; // 10 minutes
+			// Wait for visibility
+			saveBtn.waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.VISIBLE).setTimeout(300000));
 
-			while (System.currentTimeMillis() < endTime) {
-			    if (saveBtn.isEnabled()) {
-			        saveBtn.click();
-			        break;
+			long startTime = System.currentTimeMillis();
+			long timeout = 300000; // 5 minutes
+
+			while (!saveBtn.isEnabled()) {
+			    if (System.currentTimeMillis() - startTime > timeout) {
+			        throw new RuntimeException("Save Change button did not become enabled within 5 minutes.");
 			    }
 			    page.waitForTimeout(1000); // Check every second
 			}
-			
+
+			saveBtn.click();
 			// Check mandatory field validation
 			try {
 				page.waitForSelector("//formly-validation-message[text()='This field is required']",
